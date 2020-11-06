@@ -22,12 +22,14 @@
 
 import {AjfBaseWidgetComponent, AjfLayoutWidgetInstance} from '@ajf/core/reports';
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   ViewEncapsulation
 } from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Component({
   templateUrl: 'layout-widget.html',
@@ -35,8 +37,17 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class AjfLayoutWidgetComponent extends AjfBaseWidgetComponent<AjfLayoutWidgetInstance> {
+export class AjfLayoutWidgetComponent extends
+    AjfBaseWidgetComponent<AjfLayoutWidgetInstance> implements AfterContentInit {
+  private _allcolumnsRendered$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  get allcolumnsRendered$(): Observable<boolean> {
+    return this._allcolumnsRendered$.asObservable();
+  }
   constructor(cdr: ChangeDetectorRef, el: ElementRef) {
     super(cdr, el);
+  }
+
+  ngAfterContentInit(): void {
+    this._allcolumnsRendered$.next(true);
   }
 }

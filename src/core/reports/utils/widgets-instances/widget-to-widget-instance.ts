@@ -119,6 +119,7 @@ export function widgetToWidgetInstance(
     });
     cwi.data = {labels: cwi.labels, datasets: cwi.datasets};
     cwi.chartType = chartToChartJsType(cw.type || cw.chartType);
+    cwi.exportable = cw.exportable ? cw.exportable : false;
     if (cw.options != null && cw.options.plugins != null) {
       const plugins = cw.options.plugins;
       const pluginNames = Object.keys(plugins);
@@ -168,6 +169,7 @@ export function widgetToWidgetInstance(
           cell.formula.map(f => trFormula(f as AjfFormula, context, ts)) :
           trFormula(cell.formula!, context, ts);
     });
+    tdwi.exportable = tdw.exportable ? tdw.exportable : false;
 
     let dataset: AjfTableCell[][] = evaluateExpression(tdw.rowDefinition.formula, context) || [];
     dataset = (dataset || []).map((row: AjfTableCell[]) => row.map(cell => {
